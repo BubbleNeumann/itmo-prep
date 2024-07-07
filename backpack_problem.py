@@ -1,25 +1,21 @@
-
-
-weights = [3, 4, 5, 8, 9]
-values = [1, 6, 4, 7, 6]
-max_weight = 13
-
-state_cnt = 2**len(weights)
+WEIGHTS = [3, 4, 5, 8, 9]
+VALUES = [1, 6, 4, 7, 6]
+MAX_WEIGHT = 13
 
 
 def get_state_weight(state: int) -> int:
     weight = 0
-    for i in range(len(weights)):
+    for i in range(len(WEIGHTS)):
         if state & (1 << i):
-            weight += weights[i]
+            weight += WEIGHTS[i]
     return weight
 
 
 def get_state_val(state: int) -> int:
     val = 0
-    for i in range(len(weights)):
+    for i in range(len(WEIGHTS)):
         if state & (1 << i):
-            val += values[i]
+            val += VALUES[i]
     return val
 
 
@@ -29,11 +25,12 @@ def bruteforce():
     """
     max_val = 0
     max_state = None
+    STATE_CNT = 2**len(WEIGHTS)
 
-    for state in range(state_cnt):
+    for state in range(STATE_CNT):
         weight = get_state_weight(state)
         val = get_state_val(state)
-        if weight <= max_weight:
+        if weight <= MAX_WEIGHT:
             if val > max_val:
                 max_val = val
                 max_state = state
@@ -43,7 +40,7 @@ def bruteforce():
 
 
 def greedy():
-    indices = [i for i in range(len(weights))]
+    indices = [i for i in range(len(WEIGHTS))]
     res = []
     res_weight = 0
     res_val = 0
@@ -52,16 +49,16 @@ def greedy():
         max_val = 0
         max_index = 0
         for i in indices:
-            if values[i] > max_val:
-                max_val = values[i]
+            if VALUES[i] > max_val:
+                max_val = VALUES[i]
                 max_index = i
 
-        res_weight += weights[max_index]
+        res_weight += WEIGHTS[max_index]
 
-        if res_weight > max_weight:
+        if res_weight > MAX_WEIGHT:
             break
 
-        res_val += values[max_index]
+        res_val += VALUES[max_index]
         res.append(max_index)
         indices.remove(max_index)
 
