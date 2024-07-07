@@ -1,3 +1,3 @@
-# itmo-prep
+## itmo-prep
 
-![cat.jpg](cat.jpg)
+<img src="cat.jpg" alt="drawing" width="400"/>
