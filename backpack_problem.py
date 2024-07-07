@@ -66,6 +66,35 @@ def greedy():
     print(res)
 
 
+def trace_result(a: list[list[int]], weights: list[int], k: int, s: int, res: list[int]):
+    if a[k][s] == 0:
+        return
+    if a[k][s] == a[k - 1][s]:
+        trace_result(a, weights, k - 1, s, res)
+    else:
+        trace_result(a, weights, k - 1, s - weights[k - 1], res)
+        res.append(k)
+
+
+def  dynamic_programming():
+    a = []
+
+    for _ in range(len(WEIGHTS) + 1):
+        a.append([0] * (MAX_WEIGHT + 1))
+
+    for i in range(1, len(WEIGHTS) + 1):
+        for j in range(1, MAX_WEIGHT + 1):
+            if WEIGHTS[i - 1] > j:
+                a[i][j] = a[i - 1][j]
+            else:
+                a[i][j] = max(a[i - 1][j], a[i - 1][j - WEIGHTS[i - 1]] + VALUES[i - 1])
+
+    res = []
+    trace_result(a, WEIGHTS, len(WEIGHTS), MAX_WEIGHT, res)
+    print(res)
+
+
 if __name__ == "__main__":
     bruteforce()
     greedy()
+    dynamic_programming()
