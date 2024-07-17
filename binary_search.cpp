@@ -2,6 +2,7 @@
 #include <experimental/random>
 #include <iostream>
 #include <stdexcept>
+#include <cassert>
 
 int* generate_sorted_arr(size_t len)
 {
@@ -28,9 +29,8 @@ size_t binary_search(int elem, int* arr, size_t arr_len)
     size_t upper_ind = arr_len;
     size_t cur_ind;
 
-    while (1)
+    while (upper_ind != lower_ind)
     {
-        if (upper_ind == lower_ind) break;
         cur_ind = (upper_ind + lower_ind) / 2;
         if (arr[cur_ind] == elem) return cur_ind; // found
 
@@ -49,10 +49,15 @@ int main()
 {
     const size_t arr_len = 10;
     auto arr = generate_sorted_arr(arr_len);
-    print_arr(arr, arr_len);
-    auto elem = arr[2];
-    std::cout << "searching for " << elem << '\n';
-    std::cout << "ind = " << binary_search(elem, arr, arr_len) << '\n';
+    assert(binary_search(arr[0], arr, arr_len) == 0);
+    assert(binary_search(arr[2], arr, arr_len) == 2);
+    assert(binary_search(arr[7], arr, arr_len) == 7);
+    try {
+        binary_search(-1, arr, arr_len);
+        assert(false);
+    } catch (std::runtime_error) {
+        assert(true);
+    }
     delete[] arr;
     return 0;
 }
